@@ -1,0 +1,24 @@
+﻿services:
+  shopmanager:
+    image: shopmanager
+    build:
+      context: .
+      dockerfile: ShopManager/Dockerfile
+    environment:
+      DATABASE_LINK: Host=localhost;Port=5432;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD};
+      
+  database:
+    image: postgres:latest
+    container_name: my_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-shopmanager_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-shopmanager_password}
+      POSTGRES_DB: ${DB_NAME:-shopmanager_database}
+    ports:
+      - "5433:${DB_PORT}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
