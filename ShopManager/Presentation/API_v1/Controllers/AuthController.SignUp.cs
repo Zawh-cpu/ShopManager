@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ShopManager.Infrastructure.Data.Entities;
+﻿using Ardalis.Result;
+using Microsoft.AspNetCore.Mvc;
 using ShopManager.Presentation.API_v1.DataAnnotations;
 
 namespace ShopManager.Presentation.API_v1.Controllers;
@@ -9,25 +9,18 @@ public partial class AuthController
     [HttpPost("signup")]
     public async Task<IActionResult> SignUp([FromBody] SignUpRequest request)
     {
-        var user = new User()
+        var result = await _authService.SignUp(request.FirstName, request.LastName, request.PhoneNumber, request.Email, request.Login, request.Password, Request.Headers["User-Agent"].ToString(), HttpContext.Connection.RemoteIpAddress?.ToString());
+        if (result.IsConflict())
         {
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            PhoneNumber = request.PhoneNumber,
-            Login = request.Login,
-            Password = request.Password,
-        };
-        
-        await _baseRepository.AddEntityAsync(user);
-        
-        var token = new Token()
-        {
-            TokenType = 
+            return Conflict();
         }
         
+        var res = result.Value;
         return new OkObjectResult(new
         {
-            Id = user.Id
+            res.UserId,
+            res.RefreshToken,
+            res.ActionToken
         });
     }
 }

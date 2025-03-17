@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace ShopManager.Core.Domain;
+namespace ShopManager.Infrastructure.Data.Config;
 
 public class AuthConfig
 {

@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Ardalis.Result" Version="10.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.2" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
@@ -24,6 +25,7 @@
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
         <PackageReference Include="Scalar.AspNetCore" Version="2.0.26" />
         <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="7.3.1" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.6.1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -41,6 +43,15 @@
       </Compile>
       <Compile Update="Presentation\API_v1\Controllers\AuthController.SignUp.cs">
         <DependentUpon>AuthController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Presentation\API_v1\Controllers\UserController.Me.cs">
+        <DependentUpon>UserController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Presentation\API_v1\Controllers\AuthController.Refresh.cs">
+        <DependentUpon>AuthController.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Presentation\API_v1\Controllers\ProductController.Add.cs">
+        <DependentUpon>ProductController.cs</DependentUpon>
       </Compile>
     </ItemGroup>
 

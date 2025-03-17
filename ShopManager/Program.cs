@@ -1,10 +1,12 @@
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
-using ShopManager.Core.Domain;
+using ShopManager.Core.Entities;
 using ShopManager.Infrastructure.Data;
-using ShopManager.Infrastructure.Interfaces;
+using ShopManager.Core.Interfaces;
+using ShopManager.Infrastructure.Data.Config;
 using ShopManager.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,16 +49,24 @@ builder.Services.AddAuthentication(options =>
             var serviceScopeFactory = context.HttpContext.RequestServices.GetRequiredService<IServiceScopeFactory>();
     
             using var scope = serviceScopeFactory.CreateScope();
-            var authService = scope.ServiceProvider.GetRequiredService<IAuthService>();
+            var tokenService = scope.ServiceProvider.GetRequiredService<ITokenService>();
 
             if (!Guid.TryParse(token.Id, out Guid tokenId))
             {
                 context.Fail("Invalid token.");
+                return;
             }
 
-            if (!await authService.IsTokenValid(tokenId))
+            var tokenStatus = await tokenService.GetTokenByIdAsync(tokenId);
+            if (tokenStatus == null || tokenStatus.IsRevoked)
             {
-                context.Fail("Token is revoked.");
+                context.Fail("Revoked token.");
+                return;
+            }
+
+            if (tokenStatus.TokenType == TokenType.Refresh && context.HttpContext.Request.Path != "/api/auth/refresh")
+            {
+                context.Fail("You cannot use refresh token to do actions.");
             }
         }
     };
@@ -66,7 +76,11 @@ builder.Services.AddAuthentication(options =>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString), ServiceLifetime.Scoped);
+builder.Services.AddSingleton<IJwtService, JwtService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IBaseRepository, BaseRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();

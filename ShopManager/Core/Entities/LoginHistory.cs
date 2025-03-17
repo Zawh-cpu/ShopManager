@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShopManager.Infrastructure.Data.Entities;
+namespace ShopManager.Core.Entities;
 
 public class LoginHistory
 {
@@ -14,10 +14,11 @@ public class LoginHistory
     public required Guid TokenId { get; set; }
     
     [StringLength(15)]
-    public required string Ipv4Address { get; set; }
-
-    public required string Location { get; set; }
+    public required string? Ipv4Address { get; set; }
+    
     public required DateTime LoginTimeStamp { get; set; }
+    
+    [StringLength(225)]
     public string? DeviceInfo { get; set; }
     
     public User? User { get; set; }

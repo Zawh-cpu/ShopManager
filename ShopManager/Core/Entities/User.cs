@@ -1,8 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace ShopManager.Infrastructure.Data.Entities;
+namespace ShopManager.Core.Entities;
 
+[Index(nameof(Login), IsUnique = true)]
+[Index(nameof(Email), IsUnique = true)]
 public class User
 {
     [Key]
@@ -14,6 +17,7 @@ public class User
     public required string PhoneNumber { get; set; }
     
     public required string Login { get; set; }
+    public required string Email { get; set; }
     public required string Password { get; set; }
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

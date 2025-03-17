@@ -5,16 +5,15 @@ namespace ShopManager.Presentation.API_v1.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public partial class AuthController : ControllerBase
+public partial class ProductController : ControllerBase
 {
     private readonly IBaseRepository _baseRepository;
-    private readonly IAuthService _authService;
+    private readonly IUserService _userService;
     private readonly ITokenService _tokenService;
 
-    public AuthController(IBaseRepository baseRepository, IAuthService authService, ITokenService tokenService)
+    public ProductController(IBaseRepository baseRepository, IUserService userService, ITokenService tokenService)
     {
         _baseRepository = baseRepository;
-        _authService = authService;
-        _tokenService = tokenService;
+        _userService = userService;
     }
 }

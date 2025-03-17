@@ -8,10 +8,15 @@ public partial class AuthController
     [HttpPost("signin")]
     public async Task<IActionResult> SignIn([FromBody] SignInRequest request)
     {
+        var result = await _authService.SignIn(request.Login, request.Password, Request.Headers["User-Agent"].ToString(), HttpContext.Connection.RemoteIpAddress?.ToString());
+        if (!result.IsSuccess) return BadRequest();
+        
+        var res = result.Value;
         return new OkObjectResult(new
         {
-            Email = request.Login,
-            Password = request.Password
+            UserId = res.UserId,
+            RefreshToken = res.RefreshToken,
+            ActionToken = res.ActionToken
         });
     }
 }

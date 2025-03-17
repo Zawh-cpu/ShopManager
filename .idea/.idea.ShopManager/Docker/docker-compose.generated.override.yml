@@ -1,0 +1,21 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  shopmanager:
+    build:
+      context: "C:\\Projects\\ShopManager"
+      dockerfile: "ShopManager/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net9.0/ShopManager.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "shopmanager:dev"
+    ports: []
+    volumes:
+    - "C:\\Projects\\ShopManager\\ShopManager:/app:rw"
+    - "C:\\Projects\\ShopManager:/src:rw"
+    - "C:\\Users\\zawha\\.nuget\\packages:/home/app/.nuget/packages"
+    working_dir: "/app"
