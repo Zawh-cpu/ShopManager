@@ -15,6 +15,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Token> Tokens { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Photo> Photos { get; set; }
+    public DbSet<Store> Stores { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

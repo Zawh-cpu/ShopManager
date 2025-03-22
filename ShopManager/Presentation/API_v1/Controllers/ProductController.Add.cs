@@ -11,6 +11,7 @@ public partial class ProductController
     [Authorize]
     public async Task<IActionResult> AddAsync([FromForm] AddProductRequest request)
     {
+        Console.WriteLine(request.Text);
         var user = await _userService.GetUserFromContext(User);
         if (user == null) return BadRequest();
         

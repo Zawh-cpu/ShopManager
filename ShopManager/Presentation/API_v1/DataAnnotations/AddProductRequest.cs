@@ -6,28 +6,24 @@ namespace ShopManager.Presentation.API_v1.DataAnnotations;
 
 public class AddProductRequest
 {
-    [Required(ErrorMessage = "Файлы обязательны")]
     [MaxFileSize(5 * 1024 * 1024)] // 5MB
     [AllowedExtensions(new string[] { ".jpg", ".jpeg", ".png", ".gif" })]
-    [FromForm(Name = "files")]
-    public List<IFormFile> Files { get; set; }
+    public List<IFormFile> Files { get; set; } = new List<IFormFile>();
 
     [Required]
-    [FromForm(Name = "data")]
-    public required AddProductDataRequest Data { get; set; }
-}
+    [StringLength(100)]
+    public required string Name { get; set; }
 
-public class AddProductDataRequest
-{
-    [Required(ErrorMessage = "Заголовок обязателен")]
-    [StringLength(100, ErrorMessage = "Заголовок не должен превышать 100 символов")]
-    public string Title { get; set; }
+    [Required]
+    [StringLength(1000)]
+    public required string Text { get; set; }
 
-    [Required(ErrorMessage = "Текст обязателен")]
-    [StringLength(1000, ErrorMessage = "Текст не должен превышать 1000 символов")]
-    public string Text { get; set; }
-
-    [Required(ErrorMessage = "Категория обязательна")]
-    [StringLength(50, ErrorMessage = "Категория не должна превышать 50 символов")]
-    public string Category { get; set; }
+    [Required]
+    public required List<string> Categories { get; set; }
+    
+    [Required]
+    public required Decimal Price { get; set; }
+    
+    [Required]
+    public required Guid StoreId { get; set; }
 }
